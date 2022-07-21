@@ -23,9 +23,14 @@ class bscToken(general):
   name = models.CharField('Token name', max_length=50)
   symbol = models.CharField('Token symbol', max_length=20)
   address = models.CharField('Token address', max_length=45)
-  networkName = models.ForeignKey('network', on_delete=models.CASCADE)
+  networkName = models.ForeignKey('network', on_delete=models.SET_NULL, null=True)
 
   def __str__(self):
     return f'{self.name} | {general.created_on}'
+
+class user(models.Model):
+  userName = models.CharField(max_length=20)
+  password = models.CharField(max_length=30)
+  email = models.EmailField(max_length=120)
 
 # Create your models here.

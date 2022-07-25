@@ -1,6 +1,8 @@
 from web3 import Web3
 import json
+import time
 from web3.middleware import geth_poa_middleware
+
 
 
 w3 = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))
@@ -20,13 +22,32 @@ methodIds = ['0x60806040',
 '0x60c06040',
 '0x61010060',
 '0x61016060',
-'0x210f5dda']
+'0x210f5dda',
+'0x662386f2']
+
+#Scans method id's in the latest block and returns a list of transaction hashes
+def scan():
+  hashes = []
+  pendingBlock = w3.eth.getBlock('pending', full_transactions = True)
+  for i in pendingBlock['transactions']:
+    if i.input[0:10] in methodIds:
+      hashes.append(w3.toHex(i.hash))
+  return hashes
 
 
-pendingBlock = w3.eth.getBlock('pending', full_transactions = True)
-for i in pendingBlock['transactions']:
-  if i['input'][0:10] in methodIds:
-    print(i)
+def checkTx():
+  hashes = scan()
+  for i in hashes:
+    tx = w3.eth.get_transaction_receipt(i)
+    contract = w3.eth.contract(address = tx.contractAddress, abi = panABI)
+    print(contract.functions.name().call())
+    print(contract.functions.symbol().call())
+
+
+while True:
+  checkTx()
+  time.sleep(3)
+
 
 
 # tx = w3.eth.getTransaction('0x1a9a79cfb4dfe5a7419fec6d52bba7c1802e06a218686cd8249d331cdc9585fd').input

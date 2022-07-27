@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class general(models.Model):
@@ -16,6 +17,9 @@ class general(models.Model):
 class network(models.Model):
   networkName = models.CharField(max_length=15)
 
+  def display_tokenAmmount(self):
+    return self.tokens.count()
+
   def __str__(self):
     return self.networkName
 
@@ -23,7 +27,7 @@ class bscToken(general):
   name = models.CharField('Token name', max_length=50)
   symbol = models.CharField('Token symbol', max_length=20)
   address = models.CharField('Token address', max_length=45)
-  networkName = models.ForeignKey('network', on_delete=models.SET_NULL, null=True)
+  networkName = models.ForeignKey('network', on_delete=models.SET_NULL, null=True, related_name='tokens')
 
   def __str__(self):
     return f'{self.name} | {general.created_on}'

@@ -32,8 +32,10 @@
                 <tr>
                   <td>{{item.name}}/{{item.symbol}}</td>
                   <td>{{item.address}}</td>
-                  <td>{{item.scannerLink}}</td>
-                  <td>{{item.exchangerLink}}</td>
+                  <td>
+                    <a href="{{item.scannerLink}}">BSC</a>
+                    <a href="{{item.exchangerLink}}">POOCOIN</a>
+                  </td>
                 </tr>
               {% endfor %}
             </tbody>

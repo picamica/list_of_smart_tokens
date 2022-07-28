@@ -9,7 +9,7 @@
 .sidebar {
   min-width: 10em;
   padding: 1em 0;
-  border-right: 1px solid yellow;
+  border-right: 1px solid black;
 }
 
 .content {

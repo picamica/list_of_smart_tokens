@@ -3,6 +3,7 @@ import json
 import time
 from web3.middleware import geth_poa_middleware
 import datetime
+import enum
 from sqlalchemy import Column, Integer, String, DateTime, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -34,6 +35,12 @@ class Tokens(Base):
     self.symbol = symbol
     self.address = address
     self.networkName_id = networkName_id
+
+class NetworkName(enum.Enum):
+  BSC = 1
+  ETH = 2
+  POLYGON = 3
+  FANTOM = 4
 
 
 def loadSession():
@@ -83,7 +90,7 @@ if __name__ == "__main__":
       except Exception as e:
         print(e)
         continue
-    # return infoList
+
 
   while True:
     check = checkTx()
@@ -92,25 +99,10 @@ if __name__ == "__main__":
       continue
     else:
       token = Tokens(check[0], check[1], check[2], check[3], check[4], 1)
+      print(token)
       session = loadSession()
       session.add(token)
       session.commit()
       time.sleep(3)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -30,7 +30,7 @@ class bscToken(general):
   networkName = models.ForeignKey('network', on_delete=models.SET_NULL, null=True, related_name='tokens')
 
   def __str__(self):
-    return f'{self.name} | {general.created_on}'
+    return f'{self.name} | {bscToken.created_on}'
 
 class user(models.Model):
   userName = models.CharField(max_length=20)

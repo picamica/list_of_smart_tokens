@@ -1,8 +1,47 @@
-{% block content %}
-  <h1>Vaziuojam</h1>
-  <ul>
-    <p>Tokens: {{ num_tokens }}</p>
-    <p>Networks: {{num_networks}}</p>
-  </ul>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Website</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  </head>
+  <body>
+    <main>
+      <div class="main_container">
+        <div class='sidebar'>
+          <p>BSC</p>
+        </div>
 
+        <div class='content'>
+          <table class='content_table'>
+
+            <thead class='thead'>
+              <tr>
+                <td>Name/Symbol</td>
+                <td>Address</td>
+                <td>Links</td>
+                <td>Age</td>
+              </tr>
+            </thead>
+
+            <tbody class='tbody'>
+              {% for item in num_tokens %}
+                <tr>
+                  <td>{{item.name}}/{{item.symbol}}</td>
+                  <td>{{item.address}}</td>
+                  <td>{{item.scannerLink}}</td>
+                  <td>{{item.exchangerLink}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+     </div>
+    </main>
+  <script src="index.js"></script>
+  </body>
+</html>

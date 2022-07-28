@@ -5,7 +5,7 @@ from .models import bscToken, network
 
 def index(request):
 
-  num_tokens = bscToken.objects.all().count()
+  num_tokens = bscToken.objects.all()
   num_networks = network.objects.all()
 
   context = {

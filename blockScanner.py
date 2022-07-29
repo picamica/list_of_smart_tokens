@@ -7,12 +7,22 @@ import enum
 from sqlalchemy import Column, Integer, String, DateTime, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from threading import Thread
 
 engine = create_engine('sqlite:///db.sqlite3')
 Base = declarative_base(engine)
 
-w3 = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))
-w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+w3BSC = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))
+w3BSC.middleware_onion.inject(geth_poa_middleware, layer=0)
+
+w3ETH = Web3(Web3.HTTPProvider('https://cloudflare-eth.com/'))
+w3ETH.middleware_onion.inject(geth_poa_middleware, layer=0)
+
+w3MATIC = Web3(Web3.HTTPProvider('https://polygon-rpc.com/'))
+w3MATIC.middleware_onion.inject(geth_poa_middleware, layer=0)
+
+w3FTM = Web3(Web3.HTTPProvider('https://fantom-mainnet.public.blastapi.io/'))
+w3FTM.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 class Tokens(Base):
 
@@ -36,11 +46,16 @@ class Tokens(Base):
     self.address = address
     self.networkName_id = networkName_id
 
+
+
 class NetworkName(enum.Enum):
   BSC = 1
   ETH = 2
-  POLYGON = 3
+  MATIC = 3
   FANTOM = 4
+
+
+
 
 
 def loadSession():
@@ -49,9 +64,55 @@ def loadSession():
   session = Session()
   return session
 
+session = loadSession()
+
+with open('./panABI.json') as file:
+  panABI = json.load(file)
+
+with open('./erc20ABI.json') as file:
+  erc20ABI = json.load(file)
+
+
+def scan(provider):
+  #Scans method id's in the latest block and returns a list of transaction hashes
+  hashes = []
+  latestBlock = provider.eth.getBlock('latest', full_transactions = True)
+  for i in latestBlock['transactions']:
+    if i.input[0:10] in methodIds:
+      hashes.append(provider.toHex(i.hash))
+  print(len(hashes))
+  return hashes
+
+def checkTx(provider, exchLink, aggregLink, networkname, abi):
+  #Scans for token contract addresses and adds values to the database
+  while True:
+    hashes = scan(provider)
+    for i in hashes:
+      tx = provider.eth.get_transaction_receipt(i)
+      contract = provider.eth.contract(address = tx.contractAddress, abi = abi)
+      try:
+        token = Tokens(exchLink+tx.contractAddress, aggregLink+tx.contractAddress,contract.functions.name().call(), contract.functions.symbol().call(), tx.contractAddress, networkname)
+        print(token.name)
+        # session = loadSession()
+        session.add(token)
+        session.commit
+      except Exception as e:
+        print(e)
+        continue
+    time.sleep(3)
+
 if __name__ == "__main__":
   bscScanLink = 'https://www.bscscan.com/address/'
   pooCoinLink = 'https://poocoin.app/tokens/'
+
+  ethScanLink = 'https://etherscan.io/address/'
+  ethUniSwapLink = 'https://app.uniswap.org/#/swap?outputCurrency='
+
+  maticScanLink = 'https://polygonscan.com/address/'
+  maticQuickSwapLink = 'https://quickswap.exchange/#/swap?outputCurrency='
+
+  ftmScanLink = 'https://ftmscan.com/token/'
+  ftmSpookySwapLink = 'https://spookyswap.finance/swap?outputCurrency='
 
   methodIds = ['0x60806040',
   '0x60a06040',
@@ -64,45 +125,17 @@ if __name__ == "__main__":
   '0x210f5dda',
   '0x662386f2']
 
-  with open('./panABI.json') as file:
-    panABI = json.load(file)
 
-  #Scans method id's in the latest block and returns a list of transaction hashes
-  def scan():
-    hashes = []
-    pendingBlock = w3.eth.getBlock('pending', full_transactions = True)
-    for i in pendingBlock['transactions']:
-      if i.input[0:10] in methodIds:
-        hashes.append(w3.toHex(i.hash))
-      else:
-        continue
-    return hashes
+  threads = [Thread(target=checkTx, args=(w3BSC, bscScanLink, pooCoinLink, NetworkName.BSC.value, panABI,)),
+  Thread(target=checkTx, args=(w3ETH, ethScanLink, ethUniSwapLink, NetworkName.ETH.value, erc20ABI,)),
+  Thread(target=checkTx, args=(w3MATIC, maticScanLink, maticQuickSwapLink, NetworkName.MATIC.value, erc20ABI,)),
+  Thread(target=checkTx, args=(w3FTM, ftmScanLink, ftmSpookySwapLink, NetworkName.FANTOM.value, erc20ABI,))]
 
-  def checkTx():
-    hashes = scan()
-    infoList = []
-    for i in hashes:
-      tx = w3.eth.get_transaction_receipt(i)
-      contract = w3.eth.contract(address = tx.contractAddress, abi = panABI)
-      try:
-        infoList.extend([bscScanLink+tx.contractAddress, pooCoinLink+tx.contractAddress, contract.functions.name().call(), contract.functions.symbol().call(), tx.contractAddress])
-        return infoList
-      except Exception as e:
-        print(e)
-        continue
+  for thread in threads:
+    thread.start()
 
+  for thread in threads:
+    thread.join()
 
-  while True:
-    check = checkTx()
-    if check == None:
-      time.sleep(3)
-      continue
-    else:
-      token = Tokens(check[0], check[1], check[2], check[3], check[4], 1)
-      print(token)
-      session = loadSession()
-      session.add(token)
-      session.commit()
-      time.sleep(3)
 
 

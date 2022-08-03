@@ -27,7 +27,7 @@ class bscToken(general):
   name = models.CharField('Token name', max_length=50)
   symbol = models.CharField('Token symbol', max_length=20)
   address = models.CharField('Token address', max_length=45)
-  networkName = models.ForeignKey('network', on_delete=models.SET_NULL, null=True, related_name='tokens')
+  networkName = models.ForeignKey(network, on_delete=models.SET_NULL, null=True, related_name='tokens')
 
   def __str__(self):
     return f'{self.name} | {bscToken.created_on}'

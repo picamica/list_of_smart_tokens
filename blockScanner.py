@@ -9,7 +9,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from threading import Thread
 
-engine = create_engine('sqlite:///db.sqlite3')
+engine = create_engine('sqlite:///db.sqlite3', connect_args={
+                       'check_same_thread': False})
 Base = declarative_base(engine)
 
 w3BSC = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))
@@ -92,14 +93,24 @@ def checkTx(provider, exchLink, aggregLink, networkname, abi):
       contract = provider.eth.contract(address = tx.contractAddress, abi = abi)
       try:
         token = Tokens(exchLink+tx.contractAddress, aggregLink+tx.contractAddress,contract.functions.name().call(), contract.functions.symbol().call(), tx.contractAddress, networkname)
-        print(token.name)
-        # session = loadSession()
-        session.add(token)
-        session.commit
+
+        if token.name == '':
+          continue
+        else:
+          session.add(token)
+          session.commit()
+
+      #some contracts have no name or symbol which throws an error, hence why exception continues
       except Exception as e:
         print(e)
         continue
-    time.sleep(3)
+
+    #networkname = 2 is ETHEREUM which has block time of average 19 seconds.
+    #other networks average on 3 seconds
+    if networkname == 2:
+      time.sleep(19)
+    else:
+      time.sleep(3)
 
 if __name__ == "__main__":
   bscScanLink = 'https://www.bscscan.com/address/'
@@ -111,7 +122,7 @@ if __name__ == "__main__":
   maticScanLink = 'https://polygonscan.com/address/'
   maticQuickSwapLink = 'https://quickswap.exchange/#/swap?outputCurrency='
 
-  ftmScanLink = 'https://ftmscan.com/token/'
+  ftmScanLink = 'https://ftmscan.com/address/'
   ftmSpookySwapLink = 'https://spookyswap.finance/swap?outputCurrency='
 
   methodIds = ['0x60806040',
@@ -125,6 +136,9 @@ if __name__ == "__main__":
   '0x210f5dda',
   '0x662386f2']
 
+  test1 = session.query(Tokens).get(870)
+  if test1.name == '':
+    print('smth')
 
   threads = [Thread(target=checkTx, args=(w3BSC, bscScanLink, pooCoinLink, NetworkName.BSC.value, panABI,)),
   Thread(target=checkTx, args=(w3ETH, ethScanLink, ethUniSwapLink, NetworkName.ETH.value, erc20ABI,)),

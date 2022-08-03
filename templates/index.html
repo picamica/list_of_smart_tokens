@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Website</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  </head>
-  <body>
-    <main>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block scripts %}
+  <script src="{% static 'js/main.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block content%}
       <div class="main_container">
         <div class='sidebar'>
           <p>BSC</p>
+          <p>ETH</p>
+          <p>Polygon</p>
+          <p>Fantom</p>
         </div>
 
         <div class='content'>
@@ -27,23 +26,12 @@
               </tr>
             </thead>
 
-            <tbody class='tbody'>
-              {% for item in num_tokens %}
-                <tr>
-                  <td>{{item.name}}/{{item.symbol}}</td>
-                  <td>{{item.address}}</td>
-                  <td>
-                    <a href="{{item.scannerLink}}">BSC</a>
-                    <a href="{{item.exchangerLink}}">POOCOIN</a>
-                  </td>
-                </tr>
-              {% endfor %}
+            <tbody id='list-of-tokens' class='tbody'>
             </tbody>
 
           </table>
         </div>
+
      </div>
-    </main>
-  <script src="index.js"></script>
-  </body>
-</html>
+{% endblock content%}
+

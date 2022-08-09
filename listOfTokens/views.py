@@ -16,9 +16,15 @@ def index(request):
   return render(request, 'index.html', context=context)
 
 
-def bsc_tokens_view(request):
+def bsc_tokens_view(request, num_tokens):
+  visible = 20
+  upper = num_tokens
+  lower = upper - visible
+
   time_threshold = datetime.now() - timedelta(hours=24)
   bscTokens = bscToken.objects.all().filter(networkName=1).filter(created_on__gte=time_threshold).order_by('-created_on')
+  size = bscTokens.count()
+
   tokensList = []
   for i in bscTokens:
     time_diff = datetime.now(timezone.utc) - i.created_on
@@ -28,56 +34,79 @@ def bsc_tokens_view(request):
       'address': i.address,
       'Scanner': i.scannerLink,
       'Exchange': i.exchangerLink,
-      'created': i.created_on,
-      'age' : time_diff.total_seconds()
+      'age' : round(time_diff.total_seconds(), 0)
     }
     tokensList.append(item)
-  return JsonResponse({'tokens': tokensList})
+  return JsonResponse({'tokens': tokensList[lower:upper], 'size':size})
 
-def eth_tokens_view(request):
+def eth_tokens_view(request, num_tokens):
+  visible = 20
+  upper = num_tokens
+  lower = upper - visible
+
   time_threshold = datetime.now() - timedelta(hours=24)
   ethTokens = bscToken.objects.all().filter(networkName=2).filter(created_on__gte=time_threshold).order_by('-created_on')
+  size = ethTokens.count()
+
   tokensList = []
   for i in ethTokens:
+    time_diff = datetime.now(timezone.utc) - i.created_on
     item = {
       'name': i.name,
       'symbol': i.symbol,
       'address': i.address,
       'Scanner': i.scannerLink,
       'Exchange': i.exchangerLink,
+      'age' : round(time_diff.total_seconds(), 0)
     }
     tokensList.append(item)
-  return JsonResponse({'tokens': tokensList})
+  return JsonResponse({'tokens': tokensList[lower:upper], 'size': size})
 
-def matic_tokens_view(request):
+def matic_tokens_view(request, num_tokens):
+  visible = 20
+  upper = num_tokens
+  lower = upper - visible
+
   time_threshold = datetime.now() - timedelta(hours=24)
   maticTokens = bscToken.objects.all().filter(networkName=3).filter(created_on__gte=time_threshold).order_by('-created_on')
+  size = maticTokens.count()
+
   tokensList = []
   for i in maticTokens:
+    time_diff = datetime.now(timezone.utc) - i.created_on
     item = {
       'name': i.name,
       'symbol': i.symbol,
       'address': i.address,
       'Scanner': i.scannerLink,
       'Exchange': i.exchangerLink,
+      'age' : round(time_diff.total_seconds(), 0)
     }
     tokensList.append(item)
-  return JsonResponse({'tokens': tokensList})
+  return JsonResponse({'tokens': tokensList[lower:upper], 'size': size})
 
-def ftm_tokens_view(request):
+def ftm_tokens_view(request, num_tokens):
+  visible = 20
+  upper = num_tokens
+  lower = upper - visible
+
   time_threshold = datetime.now() - timedelta(hours=24)
   ftmTokens = bscToken.objects.all().filter(networkName=4).filter(created_on__gte=time_threshold).order_by('-created_on')
+  size = ftmTokens.count()
+
   tokensList = []
   tokensList = []
   for i in ftmTokens:
+    time_diff = datetime.now(timezone.utc) - i.created_on
     item = {
       'name': i.name,
       'symbol': i.symbol,
       'address': i.address,
       'Scanner': i.scannerLink,
       'Exchange': i.exchangerLink,
+      'age' : round(time_diff.total_seconds(), 0)
     }
     tokensList.append(item)
-  return JsonResponse({'tokens': tokensList})
+  return JsonResponse({'tokens': tokensList[lower:upper], 'size': size})
 
 # Create your views here.

@@ -13,7 +13,8 @@
 }
 
 .content {
-  display: inherit;
+  display: flex;
+  flex-flow: column;
   width: 80%;
   padding: 1em 1.2em;
   align-items: flex-start;

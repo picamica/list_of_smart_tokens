@@ -3,6 +3,7 @@
 
 {% block scripts %}
   <script src="{% static 'js/main.js' %}" defer></script>
+  <script src="{% static 'js/clickbtn.js' %}"></script>
 {% endblock scripts %}
 
 {% block content%}
@@ -27,9 +28,14 @@
             </thead>
 
             <tbody id='list-of-tokens' class='tbody'>
+
             </tbody>
 
+
           </table>
+          <div>
+            <button id='load-btn'>Load more</button>
+          </div>
         </div>
 
      </div>

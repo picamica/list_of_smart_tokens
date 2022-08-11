@@ -105,10 +105,10 @@ def checkTx(provider, exchLink, aggregLink, networkname, abi):
         print(e)
         continue
 
-    #networkname = 2 is ETHEREUM which has block time of average 19 seconds.
+    #networkname = 2 is ETHEREUM which has block time of average 21 seconds.
     #other networks average on 3 seconds
     if networkname == 2:
-      time.sleep(19)
+      time.sleep(21)
     else:
       time.sleep(3)
 

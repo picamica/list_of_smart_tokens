@@ -9,10 +9,23 @@
 {% block content%}
       <div class="main_container">
         <div class='sidebar'>
-          <div id='bscdiv'>BSC</div>
-          <div id='ethdiv'>ETH</div>
-          <div id='maticdiv'>Polygon</div>
-          <div id='ftmdiv'>Fantom</div>
+          <div style='padding:0.5em 1em 0.5em 1em'>Network</div>
+          <div class='sidebar-item' id='bscdiv'>
+            <img src="{% static 'images/bsc-logo.png' %}">
+            BSC
+          </div>
+          <div class='sidebar-item' id='ethdiv'>
+            <img src="{% static 'images/eth-logo.png' %}">
+            Ethereum
+          </div>
+          <div class='sidebar-item' id='maticdiv'>
+            <img src="{% static 'images/polygon-logo.png' %}">
+            Polygon
+          </div>
+          <div class='sidebar-item' id='ftmdiv'>
+            <img src="{% static 'images/fantom-logo.png' %}">
+            Fantom
+          </div>
         </div>
 
         <div class='content'>
@@ -35,6 +48,9 @@
           </table>
           <div>
             <button id='load-btn'>Load more</button>
+          </div>
+          <div>
+            <button id='load-all-btn'>Load all</button>
           </div>
         </div>
 

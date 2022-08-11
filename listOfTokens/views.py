@@ -17,13 +17,17 @@ def index(request):
 
 
 def bsc_tokens_view(request, num_tokens):
-  visible = 20
-  upper = num_tokens
-  lower = upper - visible
-
   time_threshold = datetime.now() - timedelta(hours=24)
   bscTokens = bscToken.objects.all().filter(networkName=1).filter(created_on__gte=time_threshold).order_by('-created_on')
   size = bscTokens.count()
+
+  if num_tokens == size:
+    lower = 0
+    upper = size
+  else:
+    visible = 20
+    upper = num_tokens
+    lower = upper - visible
 
   tokensList = []
   for i in bscTokens:
@@ -40,13 +44,17 @@ def bsc_tokens_view(request, num_tokens):
   return JsonResponse({'tokens': tokensList[lower:upper], 'size':size})
 
 def eth_tokens_view(request, num_tokens):
-  visible = 20
-  upper = num_tokens
-  lower = upper - visible
-
   time_threshold = datetime.now() - timedelta(hours=24)
   ethTokens = bscToken.objects.all().filter(networkName=2).filter(created_on__gte=time_threshold).order_by('-created_on')
   size = ethTokens.count()
+
+  if num_tokens == size:
+    lower = 0
+    upper = size
+  else:
+    visible = 20
+    upper = num_tokens
+    lower = upper - visible
 
   tokensList = []
   for i in ethTokens:
@@ -63,13 +71,17 @@ def eth_tokens_view(request, num_tokens):
   return JsonResponse({'tokens': tokensList[lower:upper], 'size': size})
 
 def matic_tokens_view(request, num_tokens):
-  visible = 20
-  upper = num_tokens
-  lower = upper - visible
-
   time_threshold = datetime.now() - timedelta(hours=24)
   maticTokens = bscToken.objects.all().filter(networkName=3).filter(created_on__gte=time_threshold).order_by('-created_on')
   size = maticTokens.count()
+
+  if num_tokens == size:
+    lower = 0
+    upper = size
+  else:
+    visible = 20
+    upper = num_tokens
+    lower = upper - visible
 
   tokensList = []
   for i in maticTokens:
@@ -86,13 +98,17 @@ def matic_tokens_view(request, num_tokens):
   return JsonResponse({'tokens': tokensList[lower:upper], 'size': size})
 
 def ftm_tokens_view(request, num_tokens):
-  visible = 20
-  upper = num_tokens
-  lower = upper - visible
-
   time_threshold = datetime.now() - timedelta(hours=24)
   ftmTokens = bscToken.objects.all().filter(networkName=4).filter(created_on__gte=time_threshold).order_by('-created_on')
   size = ftmTokens.count()
+
+  if num_tokens == size:
+    lower = 0
+    upper = size
+  else:
+    visible = 20
+    upper = num_tokens
+    lower = upper - visible
 
   tokensList = []
   tokensList = []

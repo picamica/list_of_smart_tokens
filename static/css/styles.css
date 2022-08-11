@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   border-radius: 0.75em;
-  border: 1px solid yellow;
+  border: 1px solid black;
   background-color: yellow;
 }
 
@@ -20,9 +20,19 @@
   align-items: flex-start;
 }
 
+img {
+  border-radius: 50%;
+  height: 1em;
+  width: 1em;
+}
+
 
 .content_table {
   width: 100%;
+}
+
+td {
+  padding: 0.3em;
 }
 
 .thead {
@@ -35,4 +45,32 @@
 
 tr {
 
+}
+
+.links {
+  white-space: nowrap;
+}
+
+a {
+  text-decoration: none;
+}
+
+.sidebar-item:hover{
+  background-color: #D8C9C9!important;
+}
+
+.sidebar-item {
+  padding: 0.5em 1em 0.5em 1em;
+  min-width: 8em;
+  cursor: pointer;
+}
+
+.overflow {
+  cursor: pointer;
+}
+
+
+
+.opa {
+  opacity: .5;
 }

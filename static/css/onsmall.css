@@ -1,0 +1,39 @@
+@media (max-width: 1050px) {
+  .sidebar {
+    display: none;
+  }
+
+  .hide_onSmall {
+    display: none;
+  }
+
+  .main_container {
+    font-size: 4vw;
+    padding: 5vw;
+  }
+
+  .header_title {
+    font-size: 9.5vw;
+  }
+
+  .header_subtitle {
+    font-size: 4vw;
+    max-width: 90%;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .token_name {
+    max-width: 35vw;
+  }
+
+  .token_symbol {
+    max-width: 34vw;
+  }
+}
+
+.hidden {
+  display: none;
+}

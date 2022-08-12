@@ -7,7 +7,19 @@
 {% endblock scripts %}
 
 {% block content%}
-      <div class="main_container">
+
+
+  <main>
+    <div class='main_container'>
+      <div class='header_container'>
+        <div class='header_title'>
+          <span>T O K E N</span>
+          <span style="margin-left: 0.8em">C I T Y</span>
+        </div>
+        <div class='header_subtitle'>Tokens deployed in the last 24 hours</div>
+      </div>
+
+      <div class="info_container">
         <div class='sidebar'>
           <div style='padding:0.5em 1em 0.5em 1em'>Network</div>
           <div class='sidebar-item' id='bscdiv'>
@@ -34,7 +46,7 @@
             <thead class='thead'>
               <tr>
                 <td>Name/Symbol</td>
-                <td>Address</td>
+                <td class='hide_onSmall'>Address</td>
                 <td>Links</td>
                 <td>Age</td>
               </tr>
@@ -44,16 +56,23 @@
 
             </tbody>
 
-
           </table>
-          <div>
-            <button id='load-btn'>Load more</button>
-          </div>
-          <div>
-            <button id='load-all-btn'>Load all</button>
+          <div class='bottom-buttons' id='buttons-box'>
+            <a id='load-btn'>
+              Load more
+            </a>
+            <a id='load-all-btn'>
+              Load all
+            </a>
           </div>
         </div>
 
      </div>
+    </div>
+  </main>
+
+    <footer>
+
+    </footer>
 {% endblock content%}
 

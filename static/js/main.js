@@ -19,6 +19,7 @@ const table = document.getElementById('list-of-tokens');
 
 
 
+
 let clicked = bscdiv;
 clicked.style.backgroundColor = '#DCDCDC';
 
@@ -34,10 +35,11 @@ function changeColor() {
 }
 
 bscdiv.addEventListener('click', function() {
+  allBtn.classList.remove('hidden');
+  btn.classList.remove('hidden');
   visible = 20;
   table.replaceChildren();
   showTokens('bsc', 'BscScan', 'PooCoin', 'bscscan', 'poocoin');
-
   changeColor();
 
 });
@@ -97,22 +99,29 @@ function showTokens(endpoint, scanner, exchanger, scannerLogo, exchangerLogo) {
       data.forEach(el => {
         table.innerHTML += `
           <tr>
-            <td>${el.name}/${el.symbol}</td>
-            <td class='overflow'>
+            <td style='display: flex;'>
+              <div class='token_name'>
+                ${el.name}
+              </div>
+              <div class='token_symbol'>
+                ${el.symbol}
+              </div>
+            </td>
+            <td class='hide_onSmall'>
               <span class='addresses'>
                 <span>${el.address}</span>
               </span>
             </td>
             <td class='links'>
-              <a href=${el.Scanner} target='_blank'>
+              <a href=${el.Scanner} target='_blank' style="padding-right: 0.5em">
                 <img src="/static/images/${scannerLogo}-logo.png">
-                <span>
+                <span class='hide_onSmall'>
                   ${scanner}
                 </span
               </a>
-              <a href=${el.Exchange}>
+              <a href=${el.Exchange} target='_blank' style="padding-right: 0.5em">
                 <img src="/static/images/${exchangerLogo}-logo.png">
-                <span>
+                <span class='hide_onSmall'>
                   ${exchanger}
                 </span>
               </a>
@@ -121,7 +130,10 @@ function showTokens(endpoint, scanner, exchanger, scannerLogo, exchangerLogo) {
           </tr>
         `;
       });
+
+      console.log(response.size);
       copyToClipboard();
+      buttonsToText(response.size, visible);
     },
     error: function(error){
       console.log(error);
@@ -138,16 +150,38 @@ function showAllTokens(endpoint, scanner, exchanger, scannerLogo, exchangerLogo)
       data.forEach(el => {
         table.innerHTML += `
           <tr>
-            <td>${el.name}/${el.symbol}</td>
-            <td>${el.address}</td>
-            <td>
-              <a href=${el.Scanner}>${scanner}</a>
-              <a href=${el.Exchange}>${exchanger}</a>
+            <td style='display: flex;'>
+              <div class='token_name'>
+                ${el.name}
+              </div>
+              <div class='token_symbol'>
+                ${el.symbol}
+              </div>
+            </td>
+            <td class='hide_onSmall'>
+              <span class='addresses'>
+                <span>${el.address}</span>
+              </span>
+            </td>
+            <td class='links'>
+              <a href=${el.Scanner} target='_blank'>
+                <img src="/static/images/${scannerLogo}-logo.png">
+                <span class='hide_onSmall'>
+                  ${scanner}
+                </span
+              </a>
+              <a href=${el.Exchange}>
+                <img src="/static/images/${exchangerLogo}-logo.png">
+                <span class='hide_onSmall'>
+                  ${exchanger}
+                </span>
+              </a>
             </td>
             ${getAge(el.age)}
           </tr>
         `;
       });
+
     },
     error: function(err) {
       console.log(err);
@@ -158,27 +192,30 @@ function showAllTokens(endpoint, scanner, exchanger, scannerLogo, exchangerLogo)
 
 
 
-let btn = document.getElementById('load-btn');
+const btn = document.getElementById('load-btn');
 btn.addEventListener('click', ()=> {
   visible += 20;
   showTokens(globalNetwork, globalScanner, globalExchanger, globalScnLogo, globalExcLogo);
 });
 
-let allBtn = document.getElementById('load-all-btn');
+const allBtn = document.getElementById('load-all-btn');
 allBtn.addEventListener('click', ()=> {
   table.replaceChildren();
   showAllTokens(globalNetwork, globalScanner, globalExchanger, globalScnLogo, globalExcLogo);
+  allBtn.classList.add('hidden');
+  btn.classList.add('hidden');
+  buttonsBox.textContent = 'No more contracts to load...';
 })
 
 function copyToClipboard() {
   const addresses = document.querySelectorAll('.addresses');
   addresses.forEach(address => {
     address.addEventListener('click', (event)=> {
-      let child = address.children[0];
+      const child = address.children[0];
       console.log(child);
       child.classList.add("opa");
 
-      let range = document.createRange();
+      const range = document.createRange();
       range.selectNode(address);
       window.getSelection().removeAllRanges();
       window.getSelection().addRange(range);
@@ -191,6 +228,17 @@ function copyToClipboard() {
 });
 }
 
+
+const buttonsBox = document.getElementById('buttons-box');
+function buttonsToText(size, visibleTokens) {
+  if (size === 0) {
+    buttonsBox.textContent = 'There are currently no new contracts created...';
+  } else if (size <= visibleTokens) {
+    allBtn.classList.add('hidden');
+    btn.classList.add('hidden');
+    buttonsBox.innerHTML += 'No more contracts to load...';
+  }
+}
 
 
 

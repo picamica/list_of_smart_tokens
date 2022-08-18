@@ -100,15 +100,15 @@ def checkTx(provider, exchLink, aggregLink, networkname, abi):
           session.add(token)
           session.commit()
 
-      #some contracts have no name or symbol which throws an error, hence why exception continues
+      #some contracts have no internal information which throws an error, hence why exception continues
       except Exception as e:
         print(e)
         continue
 
-    #networkname = 2 is ETHEREUM which has block time of average 21 seconds.
+    #networkname = 2 is ETHEREUM which has block time of average 25 seconds.
     #other networks average on 3 seconds
     if networkname == 2:
-      time.sleep(21)
+      time.sleep(25)
     else:
       time.sleep(3)
 
@@ -136,9 +136,6 @@ if __name__ == "__main__":
   '0x210f5dda',
   '0x662386f2']
 
-  test1 = session.query(Tokens).get(870)
-  if test1.name == '':
-    print('smth')
 
   threads = [Thread(target=checkTx, args=(w3BSC, bscScanLink, pooCoinLink, NetworkName.BSC.value, panABI,)),
   Thread(target=checkTx, args=(w3ETH, ethScanLink, ethUniSwapLink, NetworkName.ETH.value, erc20ABI,)),

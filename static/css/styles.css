@@ -1,7 +1,7 @@
 body {
   margin:  0;
   padding: 0;
-
+  background-color: #052939;
 }
 
 main {
@@ -25,32 +25,35 @@ main {
 .header_title {
   font-weight: 700;
   font-size: 3.25em;
-
+  font-family: Tahoma,Verdana,sans-serif;
+  -webkit-text-fill-colot: #000;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #50bfe6;
 }
 
 .header_subtitle {
   font-size: 1.5em;
   text-align: center;
+  color: #50bfe6;
 }
 
 .info_container {
-  min-width: 80%;
   display: flex;
   justify-content: center;
   border-radius: 0.75em;
-  border: 1px solid black;
-  background-color: yellow;
+  border: 1px solid #EDEFF0;
+  background-color: #2F464F;
 }
 
 .sidebar {
   min-width: 10em;
   padding: 1em 0;
-  border-right: 1px solid black;
+  border-right: 1px solid #EDEFF0;
 }
 
 
 .sidebar-item:hover{
-  background-color: #D8C9C9!important;
+  background-color: #7B939C!important;
 }
 
 .sidebar-item {
@@ -75,13 +78,16 @@ main {
 
 .token_name {
   font-size: 95%;
+  max-width: 13vw;
+  color: #D9E3E7;
 }
 
 .token_symbol {
   font-size: 80%;
   vertical-align: top;
+  max-width: 12vw;
   padding-left: 0.5em;
-  color: grey;
+  color: #8A8999;
 }
 
 .bottom-buttons {
@@ -92,6 +98,14 @@ main {
   font-size: 0.9em;
 }
 
+.dropdown_button {
+  display: none;
+}
+
+.addresses {
+  cursor: pointer;
+  color: #8A8999;
+}
 
 img {
   border-radius: 50%;

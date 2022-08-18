@@ -15,36 +15,79 @@ const ethdiv = document.getElementById('ethdiv');
 const maticdiv = document.getElementById('maticdiv');
 const ftmdiv = document.getElementById('ftmdiv');
 const table = document.getElementById('list-of-tokens');
+const dropdownBtn = document.getElementById('dropdownBtn');
+const contentDiv = document.getElementById('contentDiv');
+const ntwrkName = document.getElementById('network_name');
+const noNewText = document.getElementById('no-new-contracts-text');
+const noMoreText = document.getElementById('no-more-contracts-text');
 
 
 
 
 
 let clicked = bscdiv;
-clicked.style.backgroundColor = '#DCDCDC';
+clicked.style.backgroundColor = '#7B939C';
 
 function changeColor() {
   if (event.target.style.backgroundColor == '' && clicked == undefined) {
-    event.target.style.backgroundColor = '#DCDCDC';
+    event.target.style.backgroundColor = '#7B939C';
     clicked = event.target;
   } else {
     clicked.style.backgroundColor = '';
     clicked = event.target;
-    clicked.style.backgroundColor = '#DCDCDC';
+    clicked.style.backgroundColor = '#7B939C';
   }
 }
 
-bscdiv.addEventListener('click', function() {
-  allBtn.classList.remove('hidden');
+
+function appendContentChild() {
+  contentDiv.appendChild(bscdiv);
+  contentDiv.appendChild(ethdiv);
+  contentDiv.appendChild(maticdiv);
+  contentDiv.appendChild(ftmdiv);
+}
+
+function removeContentChild() {
+  contentDiv.removeChild(bscdiv);
+  contentDiv.removeChild(ethdiv);
+  contentDiv.removeChild(maticdiv);
+  contentDiv.removeChild(ftmdiv);
+}
+
+function hideBtn() {
+  btn.classList.add('hidden');
+  allBtn.classList.add('hidden');
+}
+
+function unhideBtn() {
   btn.classList.remove('hidden');
+  allBtn.classList.remove('hidden');
+}
+
+dropdownBtn.addEventListener('click', function() {
+  table.replaceChildren();
+  appendContentChild();
+  hideBtn();
+});
+
+bscdiv.addEventListener('click', function() {
+  if (bscdiv.parentElement === contentDiv) {
+    removeContentChild();
+    unhideBtn();
+    ntwrkName.innerHTML = 'BSC';
+  }
   visible = 20;
   table.replaceChildren();
   showTokens('bsc', 'BscScan', 'PooCoin', 'bscscan', 'poocoin');
   changeColor();
-
 });
 
 ethdiv.addEventListener('click', function() {
+  if (bscdiv.parentElement === contentDiv) {
+    removeContentChild();
+    unhideBtn();
+    ntwrkName.innerHTML = 'Ethereum';
+  }
   visible = 20;
   table.replaceChildren();
   showTokens('eth', 'EtherScan', 'Uniswap', 'etherscan', 'uniswap');
@@ -53,6 +96,11 @@ ethdiv.addEventListener('click', function() {
 });
 
 maticdiv.addEventListener('click', function() {
+  if (bscdiv.parentElement === contentDiv) {
+    removeContentChild();
+    unhideBtn();
+    ntwrkName.innerHTML = 'Polygon';
+  }
   visible = 20;
   table.replaceChildren();
   showTokens('matic', 'PolygonScan', 'QuickSwap', 'polygonscan', 'quickswap');
@@ -61,6 +109,11 @@ maticdiv.addEventListener('click', function() {
 });
 
 ftmdiv.addEventListener('click', function() {
+  if (bscdiv.parentElement === contentDiv) {
+    removeContentChild();
+    unhideBtn();
+    ntwrkName.innerHTML = 'Fantom';
+  }
   visible = 20;
   table.replaceChildren();
   showTokens('ftm', 'FtmScan', 'SpookySwap', 'ftmscan', 'spookyswap');
@@ -72,11 +125,11 @@ ftmdiv.addEventListener('click', function() {
 
 function getAge(age) {
   if (age >= 3600) {
-    return `<td>${~~(age/3600)}h</td>`
+    return `<td style="color:#D9E3E7">${~~(age/3600)}h</td>`
   } else if (age >= 60) {
-    return `<td>${~~(age/60)}m</td>`
+    return `<td style="color:#D9E3E7">${~~(age/60)}m</td>`
   } else {
-    return `<td>${age}s</td>`
+    return `<td style="color:#D9E3E7">${age}s</td>`
   }
 }
 
@@ -94,7 +147,6 @@ function showTokens(endpoint, scanner, exchanger, scannerLogo, exchangerLogo) {
     url: `/data/${endpoint}/${visible}/`,
     success: function(response){
       visibleAll = response.size;
-      console.log(response.tokens);
       const data = response.tokens;
       data.forEach(el => {
         table.innerHTML += `
@@ -115,13 +167,13 @@ function showTokens(endpoint, scanner, exchanger, scannerLogo, exchangerLogo) {
             <td class='links'>
               <a href=${el.Scanner} target='_blank' style="padding-right: 0.5em">
                 <img src="/static/images/${scannerLogo}-logo.png">
-                <span class='hide_onSmall'>
+                <span class='hide_onSmall' style="color:#8A8999">
                   ${scanner}
                 </span
               </a>
               <a href=${el.Exchange} target='_blank' style="padding-right: 0.5em">
                 <img src="/static/images/${exchangerLogo}-logo.png">
-                <span class='hide_onSmall'>
+                <span class='hide_onSmall' style="color:#8A8999">
                   ${exchanger}
                 </span>
               </a>
@@ -130,8 +182,6 @@ function showTokens(endpoint, scanner, exchanger, scannerLogo, exchangerLogo) {
           </tr>
         `;
       });
-
-      console.log(response.size);
       copyToClipboard();
       buttonsToText(response.size, visible);
     },
@@ -164,15 +214,15 @@ function showAllTokens(endpoint, scanner, exchanger, scannerLogo, exchangerLogo)
               </span>
             </td>
             <td class='links'>
-              <a href=${el.Scanner} target='_blank'>
+              <a href=${el.Scanner} target='_blank' style="padding-right: 0.5em">
                 <img src="/static/images/${scannerLogo}-logo.png">
-                <span class='hide_onSmall'>
+                <span class='hide_onSmall' style="color:#8A8999">
                   ${scanner}
                 </span
               </a>
               <a href=${el.Exchange}>
                 <img src="/static/images/${exchangerLogo}-logo.png">
-                <span class='hide_onSmall'>
+                <span class='hide_onSmall' style="color:#8A8999">
                   ${exchanger}
                 </span>
               </a>
@@ -191,7 +241,6 @@ function showAllTokens(endpoint, scanner, exchanger, scannerLogo, exchangerLogo)
 
 
 
-
 const btn = document.getElementById('load-btn');
 btn.addEventListener('click', ()=> {
   visible += 20;
@@ -202,9 +251,8 @@ const allBtn = document.getElementById('load-all-btn');
 allBtn.addEventListener('click', ()=> {
   table.replaceChildren();
   showAllTokens(globalNetwork, globalScanner, globalExchanger, globalScnLogo, globalExcLogo);
-  allBtn.classList.add('hidden');
-  btn.classList.add('hidden');
-  buttonsBox.textContent = 'No more contracts to load...';
+  hideBtn();
+  noMoreText.classList.remove('hidden');
 })
 
 function copyToClipboard() {
@@ -212,7 +260,6 @@ function copyToClipboard() {
   addresses.forEach(address => {
     address.addEventListener('click', (event)=> {
       const child = address.children[0];
-      console.log(child);
       child.classList.add("opa");
 
       const range = document.createRange();
@@ -229,14 +276,19 @@ function copyToClipboard() {
 }
 
 
-const buttonsBox = document.getElementById('buttons-box');
+
 function buttonsToText(size, visibleTokens) {
   if (size === 0) {
-    buttonsBox.textContent = 'There are currently no new contracts created...';
-  } else if (size <= visibleTokens) {
-    allBtn.classList.add('hidden');
-    btn.classList.add('hidden');
-    buttonsBox.innerHTML += 'No more contracts to load...';
+    hideBtn();
+    noNewText.classList.remove('hidden');
+  } else if (size <= visibleTokens ) {
+    hideBtn();
+    noMoreText.classList.remove('hidden');
+  }
+  else {
+    unhideBtn();
+    noNewText.classList.add('hidden');
+    noMoreText.classList.add('hidden');
   }
 }
 

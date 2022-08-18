@@ -26,11 +26,21 @@
   }
 
   .token_name {
-    max-width: 35vw;
+    max-width: 25vw;
   }
 
   .token_symbol {
-    max-width: 34vw;
+    max-width: 24vw;
+  }
+
+  .dropdown_button {
+    display: block;
+    font-size: 1em;
+    color: #FFF;
+    background-color: #55C0D1;
+    border: 1px solid #D8E8EB;
+    border-radius: 0.25em;
+    padding: 0.75em;
   }
 }
 

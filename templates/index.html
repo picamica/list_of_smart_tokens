@@ -18,37 +18,38 @@
         </div>
         <div class='header_subtitle'>Tokens deployed in the last 24 hours</div>
       </div>
-
+      <button class='dropdown_button' id='dropdownBtn'>
+        <span>Network:</span>
+        <span id='network_name'>BSC</span>
+      </button>
       <div class="info_container">
         <div class='sidebar'>
-          <div style='padding:0.5em 1em 0.5em 1em'>Network</div>
-          <div class='sidebar-item' id='bscdiv'>
+          <div style='padding:0.5em 1em 0.5em 1em; color:#44B087'>Network</div>
+          <div class='sidebar-item' id='bscdiv' style='color:#D9E3E7'>
             <img src="{% static 'images/bsc-logo.png' %}">
             BSC
           </div>
-          <div class='sidebar-item' id='ethdiv'>
+          <div class='sidebar-item' id='ethdiv' style='color:#D9E3E7'>
             <img src="{% static 'images/eth-logo.png' %}">
             Ethereum
           </div>
-          <div class='sidebar-item' id='maticdiv'>
+          <div class='sidebar-item' id='maticdiv' style='color:#D9E3E7'>
             <img src="{% static 'images/polygon-logo.png' %}">
             Polygon
           </div>
-          <div class='sidebar-item' id='ftmdiv'>
+          <div class='sidebar-item' id='ftmdiv' style='color:#D9E3E7'>
             <img src="{% static 'images/fantom-logo.png' %}">
             Fantom
           </div>
         </div>
-
-        <div class='content'>
+        <div class='content' id='contentDiv'>
           <table class='content_table'>
-
             <thead class='thead'>
               <tr>
-                <td>Name/Symbol</td>
-                <td class='hide_onSmall'>Address</td>
-                <td>Links</td>
-                <td>Age</td>
+                <td style='color:#44B087'>Name/Symbol</td>
+                <td class='hide_onSmall' style='color:#44B087'>Address</td>
+                <td style='color:#44B087'>Links</td>
+                <td style='color:#44B087'>Age</td>
               </tr>
             </thead>
 
@@ -58,10 +59,12 @@
 
           </table>
           <div class='bottom-buttons' id='buttons-box'>
-            <a id='load-btn'>
+            <div class='hidden' id='no-new-contracts-text'>There are currently no new contracts created...</div>
+            <div class='hidden' id='no-more-contracts-text'>No more contracts to load...</div>
+            <a id='load-btn' style='color:#44B087'>
               Load more
             </a>
-            <a id='load-all-btn'>
+            <a id='load-all-btn' style='color:#44B087'>
               Load all
             </a>
           </div>

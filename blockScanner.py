@@ -101,8 +101,7 @@ def checkTx(provider, exchLink, aggregLink, networkname, abi):
           session.commit()
 
       #some contracts have no internal information which throws an error, hence why exception continues
-      except Exception as e:
-        print(e)
+      except Exception:
         continue
 
     #networkname = 2 is ETHEREUM which has block time of average 25 seconds.

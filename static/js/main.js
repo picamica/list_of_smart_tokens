@@ -65,6 +65,12 @@ function unhideBtn() {
 }
 
 dropdownBtn.addEventListener('click', function() {
+  if (!noNewText.classList.contains('hidden')) {
+    noNewText.classList.add('hidden');
+  }
+  else if (!noMoreText.classList.contains('hidden')) {
+    noMoreText.classList.add('hidden');
+  }
   table.replaceChildren();
   appendContentChild();
   hideBtn();

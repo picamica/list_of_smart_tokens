@@ -287,9 +287,11 @@ function buttonsToText(size, visibleTokens) {
   if (size === 0) {
     hideBtn();
     noNewText.classList.remove('hidden');
+    noMoreText.classList.add('hidden');
   } else if (size <= visibleTokens ) {
     hideBtn();
     noMoreText.classList.remove('hidden');
+    noNewText.classList.add('hidden');
   }
   else {
     unhideBtn();
